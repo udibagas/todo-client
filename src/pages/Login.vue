@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { client } from "@/lib/client";
 import axios from "axios";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
@@ -22,10 +23,13 @@ const router = useRouter(); // Assuming you have a router instance available
 
 const submitForm = async () => {
   try {
-    const { data } = await axios.post("http://localhost:8000/api/login", form);
+    await client.get("/sanctum/csrf-cookie");
+
+    const { data } = await client.post("/api/login", form);
+
     console.log("Login successful:", data);
 
-    localStorage.setItem("token", data.token);
+    // localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
     // Handle successful login, e.g., redirect to todos page

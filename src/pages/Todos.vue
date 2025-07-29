@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, Trash2, Plus, Edit, Save, X } from "lucide-vue-next";
-import axios from "axios";
 import { useRouter } from "vue-router";
+import { client } from "@/lib/client"; // Assuming you have a client setup for axios
 
 interface Todo {
   id: number;
@@ -54,11 +54,7 @@ const toggleTodo = (id: number) => {
 
 const deleteTodo = async (id: number) => {
   try {
-    await axios.delete("http://localhost:8000/api/todo/" + id, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    await client.delete("/api/todo/" + id);
     fetchTodo();
   } catch (err) {
     console.error(err);
@@ -91,8 +87,8 @@ const handleKeydown = (event: KeyboardEvent, action: "add" | "edit") => {
 };
 
 const logout = () => {
-  axios
-    .post("http://localhost:8000/api/logout")
+  client
+    .post("/api/logout")
     .then(() => {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
@@ -104,15 +100,9 @@ const logout = () => {
 };
 
 const fetchTodo = () => {
-  axios
-    .get("http://localhost:8000/api/todo", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      todos.value = response.data.data;
-    });
+  client.get("/api/todo").then((response) => {
+    todos.value = response.data.data;
+  });
 };
 
 fetchTodo();
