@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,9 @@ const todos = ref<Todo[]>([]);
 const newTodoText = ref("");
 const editingId = ref<number | null>(null);
 const editingText = ref("");
+const user = ref<{ name: string }>({
+  name: JSON.parse(localStorage.getItem("user") || "{}")?.name || "Guest",
+});
 
 // Computed
 const completedTodos = computed(() =>
@@ -100,12 +103,19 @@ const logout = () => {
 };
 
 const fetchTodo = () => {
-  client.get("/api/todo").then((response) => {
-    todos.value = response.data.data;
-  });
+  client
+    .get("/api/todo")
+    .then((response) => {
+      todos.value = response.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
-fetchTodo();
+onMounted(() => {
+  fetchTodo();
+});
 </script>
 
 <template>
@@ -121,7 +131,11 @@ fetchTodo();
         </p>
       </div>
 
-      <Button variant="destructive" @click="logout">Logout</Button>
+      <div class="flex items-center gap-4">
+        <div class="font-bold">Welcome, {{ user.name }}</div>
+        |
+        <a href="#" @click.prevent="logout">Logout</a>
+      </div>
     </div>
 
     <!-- Stats -->
