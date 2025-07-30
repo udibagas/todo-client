@@ -54,12 +54,12 @@ const submitForm = () => {
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <!-- <div
+      <div
         class="mb-4 text-red-500 text-sm bg-red-50 p-4 rounded-lg"
         v-if="errorMessage"
       >
         {{ errorMessage }}
-      </div> -->
+      </div>
       <form @submit.prevent="submitForm" class="grid gap-4">
         <div class="grid gap-2">
           <Label for="first-name">Name</Label>

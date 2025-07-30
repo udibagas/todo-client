@@ -10,13 +10,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { client } from "@/lib/client";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const form = reactive({
   email: "",
   password: "",
 });
+
+const error = ref<string>("");
 
 const router = useRouter(); // Assuming you have a router instance available
 
@@ -31,8 +33,9 @@ const submitForm = async () => {
 
     // Handle successful login, e.g., redirect to todos page
     router.push("/"); // Assuming you have a router instance available
-  } catch (error) {
-    console.error("Login failed:", error);
+  } catch (err: any) {
+    error.value =
+      err.response.data.message || "Login failed. Please try again.";
     // Handle login error, e.g., show an error message
   }
 };
@@ -47,6 +50,13 @@ const submitForm = async () => {
       </CardDescription>
     </CardHeader>
     <CardContent>
+      <div
+        class="mb-4 text-red-500 text-sm bg-red-50 p-4 rounded-lg"
+        v-if="error"
+      >
+        {{ error }}
+      </div>
+
       <form @submit.prevent="submitForm" class="grid gap-4">
         <div class="grid gap-2">
           <Label for="email">Email</Label>
