@@ -22,8 +22,6 @@ const router = useRouter(); // Assuming you have a router instance available
 
 const submitForm = async () => {
   try {
-    await client.get("/sanctum/csrf-cookie");
-
     const { data } = await client.post("/api/login", form);
 
     console.log("Login successful:", data);
