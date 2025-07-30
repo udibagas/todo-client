@@ -65,6 +65,7 @@ const deleteTodo = async (id: number) => {
 };
 
 const startEdit = (todo: Todo) => {
+  console.log("Editing todo:", todo);
   // editingId.value = todo.id;
 };
 
@@ -78,6 +79,7 @@ const cancelEdit = () => {
 };
 
 const handleKeydown = (event: KeyboardEvent, action: "add" | "edit") => {
+  console.log("Key pressed:", action, event.key);
   // if (event.key === "Enter") {
   //   if (action === "add") {
   //     addTodo();

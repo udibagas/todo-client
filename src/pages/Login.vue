@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { client } from "@/lib/client";
-import axios from "axios";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 

@@ -21,6 +21,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  console.log("Navigating from:", from.path);
   if (to.name == "login" || to.name == "register") {
     return next();
   }
